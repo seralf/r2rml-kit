@@ -6,15 +6,16 @@ import org.d2rq.lang.D2RQValidator;
 import org.d2rq.lang.Database;
 import org.d2rq.lang.Mapping;
 import org.d2rq.lang.PropertyBridge;
-
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.vocabulary.RDF;
 
+import static org.junit.Assert.*;
 
-public class ConstantValueClassMapTest extends TestCase {
+public class ConstantValueClassMapTest {
 	
 	private Model model;
 	private Mapping mapping;
@@ -51,6 +52,7 @@ public class ConstantValueClassMapTest extends TestCase {
 		return result;
 	}
 	
+	@Before
 	public void setUp() {
 		this.model = ModelFactory.createDefaultModel();
 		this.mapping = new Mapping();
@@ -70,8 +72,8 @@ public class ConstantValueClassMapTest extends TestCase {
 		memberBridge.addCondition("c.foo = 1");
 	}
 	
-	public void testValidate()
-	{
+	@Test
+	public void testValidate() {
 		try {
 			collection.accept(new D2RQValidator(null));
 		} catch (D2RQException e) {

@@ -3,32 +3,36 @@ package org.d2rq.lang;
 import org.d2rq.lang.TranslationTable;
 import org.d2rq.lang.TranslationTable.Translation;
 import org.d2rq.values.Translator;
-
-import junit.framework.TestCase;
+import org.junit.Test;
 
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 
+import static org.junit.Assert.*;
 
 /**
  * Tests the TranslationTable functionality
  *
  * @author Richard Cyganiak (richard@cyganiak.de)
  */
-public class TranslationTableTest extends TestCase {
+public class TranslationTableTest {
+	
 	Resource table1 = ResourceFactory.createResource("http://test/table1");
 
+	@Test
 	public void testNewTranslationTableIsEmpty() {
 		TranslationTable table = new TranslationTable(table1);
 		assertEquals(0, table.size());
 	}
 	
+	@Test
 	public void testTranslationTableIsSizeOneAfterAddingOneTranslation() {
 		TranslationTable table = new TranslationTable(table1);
 		table.addTranslation("key1", "value1");
 		assertEquals(1, table.size());
 	}
 
+	@Test
 	public void testTranslationTableTranslator() {
 		TranslationTable table = new TranslationTable(table1);
 		table.addTranslation("key1", "value1");
@@ -41,6 +45,7 @@ public class TranslationTableTest extends TestCase {
 		assertEquals("key2", translator.toDBValue("value2"));
 	}
 
+	@Test
 	public void testUndefinedTranslation() {
 		TranslationTable table = new TranslationTable(table1);
 		table.addTranslation("key1", "value1");
@@ -49,6 +54,7 @@ public class TranslationTableTest extends TestCase {
 		assertNull(translator.toDBValue("http://example.org/"));
 	}
 	
+	@Test
 	public void testNullTranslation() {
 		TranslationTable table = new TranslationTable(table1);
 		table.addTranslation("key1", "value1");
@@ -57,6 +63,7 @@ public class TranslationTableTest extends TestCase {
 		assertNull(translator.toDBValue(null));
 	}
 	
+	@Test
 	public void testTranslationsWithSameValuesAreEqual() {
 		Translation t1 = new Translation("foo", "bar");
 		Translation t2 = new Translation("foo", "bar");
@@ -64,6 +71,7 @@ public class TranslationTableTest extends TestCase {
 		assertEquals(t1.hashCode(), t2.hashCode());
 	}
 	
+	@Test
 	public void testTranslationsWithDifferentValuesAreNotEqual() {
 		Translation t1 = new Translation("foo", "bar");
 		Translation t2 = new Translation("foo", "bar2");

@@ -6,59 +6,73 @@ import org.d2rq.mapgen.Filter;
 import org.d2rq.mapgen.FilterParser;
 import org.d2rq.mapgen.Filter.IdentifierMatcher;
 import org.d2rq.mapgen.FilterParser.ParseException;
+import org.junit.Test;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-public class FilterParserTest extends TestCase {
+public class FilterParserTest {
 
+	@Test
 	public void testEmpty() throws ParseException {
 		assertEquals("", toString(new FilterParser("").parse()));
 	}
 	
+	@Test
 	public void testSimple() throws ParseException {
 		assertEquals("'foo'", toString(new FilterParser("foo").parse()));
 	}
 	
+	@Test
 	public void testMultipleStrings() throws ParseException {
 		assertEquals("'foo'.'bar'", toString(new FilterParser("foo.bar").parse()));
 	}
 	
+	@Test
 	public void testMultipleFilters() throws ParseException {
 		assertEquals("'foo','bar'", toString(new FilterParser("foo,bar").parse()));
 	}
 	
+	@Test
 	public void testMultipleFiltersNewline() throws ParseException {
 		assertEquals("'foo','bar'", toString(new FilterParser("foo\n\rbar").parse()));
 	}
 	
+	@Test
 	public void testRegex() throws ParseException {
 		assertEquals("/foo/0", toString(new FilterParser("/foo/").parse()));
 	}
 
+	@Test
 	public void testRegexWithFlag() throws ParseException {
 		assertEquals("/foo/2", toString(new FilterParser("/foo/i").parse()));
 	}
 
+	@Test
 	public void testMutlipleRegexes() throws ParseException {
 		assertEquals("/foo/0./bar/0", toString(new FilterParser("/foo/./bar/").parse()));
 	}
 
+	@Test
 	public void testMutlipleRegexFilters() throws ParseException {
 		assertEquals("/foo/0,/bar/0", toString(new FilterParser("/foo/,/bar/").parse()));
 	}
 
+	@Test
 	public void testDotInRegex() throws ParseException {
 		assertEquals("/foo.bar/0", toString(new FilterParser("/foo.bar/").parse()));
 	}
 
+	@Test
 	public void testEscapedDotInRegex() throws ParseException {
 		assertEquals("/foo\\.bar/0", toString(new FilterParser("/foo\\.bar/").parse()));
 	}
 
+	@Test
 	public void testCommaInRegex() throws ParseException {
 		assertEquals("/foo,bar/0", toString(new FilterParser("/foo,bar/").parse()));
 	}
 
+	@Test
 	public void testIncompleteRegex() {
 		try {
 			new FilterParser("/foo").parse();
@@ -68,6 +82,7 @@ public class FilterParserTest extends TestCase {
 		}
 	}
 
+	@Test
 	public void testIncompleteRegexNewline() {
 		try {
 			new FilterParser("/foo\nbar/").parse();
@@ -77,11 +92,13 @@ public class FilterParserTest extends TestCase {
 		}
 	}
 
+	@Test
 	public void testComplex() throws ParseException {
 		assertEquals("/.*/0.'CHECKSUM','USER'.'PASSWORD'",
 				toString(new FilterParser("/.*/.CHECKSUM,USER.PASSWORD").parse()));
 	}
 	
+	@Test
 	public void testParseAsSchemaFilter() throws ParseException {
 		Filter result = new FilterParser("schema1,schema2").parseSchemaFilter();
 		assertTrue(result.matchesSchema("schema1"));
@@ -90,6 +107,7 @@ public class FilterParserTest extends TestCase {
 		assertFalse(result.matchesSchema(null));
 	}
 	
+	@Test
 	public void testParseAsSchemaFilterWithRegex() throws ParseException {
 		Filter result = new FilterParser("/schema[12]/i").parseSchemaFilter();
 		assertTrue(result.matchesSchema("schema1"));
@@ -97,7 +115,8 @@ public class FilterParserTest extends TestCase {
 		assertFalse(result.matchesSchema("schema3"));
 		assertFalse(result.matchesSchema(null));
 	}
-	
+
+	@Test
 	public void testParseAsSchemaFilterFail() {
 		try {
 			new FilterParser("schema.table").parseSchemaFilter();
@@ -107,6 +126,7 @@ public class FilterParserTest extends TestCase {
 		}
 	}
 
+	@Test
 	public void testParseAsTableFilter() throws ParseException {
 		Filter result = new FilterParser("schema.table1,schema.table2,table3").parseTableFilter(false);
 		assertTrue(result.matchesTable("schema", "table1"));
@@ -119,6 +139,7 @@ public class FilterParserTest extends TestCase {
 		assertFalse(result.matchesTable(null, "table4"));
 	}
 	
+	@Test
 	public void testTableFilterTooMany() {
 		try {
 			new FilterParser("a.b.c").parseTableFilter(true);
@@ -128,6 +149,7 @@ public class FilterParserTest extends TestCase {
 		}
 	}
 
+	@Test
 	public void testParseAsColumnFilter() throws ParseException {
 		Filter result = new FilterParser("s.t1.c1,t2.c2,t2.c3").parseColumnFilter(false);
 		assertTrue(result.matchesColumn("s", "t1", "c1"));

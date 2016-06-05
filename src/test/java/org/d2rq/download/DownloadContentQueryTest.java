@@ -13,15 +13,20 @@ import org.d2rq.HSQLDatabase;
 import org.d2rq.algebra.DownloadRelation;
 import org.d2rq.download.DownloadContentQuery;
 import org.d2rq.lang.Mapping;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-public class DownloadContentQueryTest extends TestCase  {
+public class DownloadContentQueryTest {
+	
 	private HSQLDatabase db;
 	private DownloadRelation downloadCLOB;
 	private DownloadRelation downloadBLOB;
 	private DownloadContentQuery q;
 	
+	@Before
 	public void setUp() {
 		db = new HSQLDatabase("test");
 		db.executeSQL("CREATE TABLE People (ID INT NOT NULL PRIMARY KEY, PIC_CLOB CLOB NULL, PIC_BLOB BLOB NULL)");
@@ -39,16 +44,19 @@ public class DownloadContentQueryTest extends TestCase  {
 		}
 	}
 
+	@After
 	public void tearDown() {
 		db.close(true);
 		if (q != null) q.close();
 	}
 	
+	@Test
 	public void testFixture() {
 		assertNotNull(downloadCLOB);
 		assertNotNull(downloadBLOB);
 	}
 	
+	@Test
 	public void testNullForNonDownloadURI() {
 		q = new DownloadContentQuery(
 				downloadCLOB, "http://not-in-the-mapping");
@@ -56,6 +64,7 @@ public class DownloadContentQueryTest extends TestCase  {
 		assertNull(q.getContentStream());
 	}
 	
+	@Test
 	public void testNullForNonExistingRecord() {
 		// There is no People.ID=42 in the table
 		q = new DownloadContentQuery(
@@ -64,6 +73,7 @@ public class DownloadContentQueryTest extends TestCase  {
 		assertNull(q.getContentStream());
 	}
 	
+	@Test
 	public void testReturnCLOBContentForExistingRecord() throws IOException {
 		q = new DownloadContentQuery(
 				downloadCLOB, "http://example.org/downloads/clob/1");
@@ -71,6 +81,7 @@ public class DownloadContentQueryTest extends TestCase  {
 		assertEquals("Hello World!", inputStreamToString(q.getContentStream()));
 	}
 
+	@Test
 	public void testNULLContent() {
 		q = new DownloadContentQuery(
 				downloadCLOB, "http://example.org/downloads/clob/2");
@@ -78,6 +89,7 @@ public class DownloadContentQueryTest extends TestCase  {
 		assertNull(q.getContentStream());
 	}
 	
+	@Test
 	public void testReturnBLOBContentForExistingRecord() throws IOException {
 		q = new DownloadContentQuery(downloadBLOB, "http://example.org/downloads/blob/2");
 		assertTrue(q.hasContent());
