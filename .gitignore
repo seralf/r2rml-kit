@@ -4,6 +4,10 @@ target
 # Eclipse stuff
 .project
 .classpath
+.settings/
 
 # OS X stuff
 .DS_Store
+
+# general
+*~

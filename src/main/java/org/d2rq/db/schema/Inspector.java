@@ -15,11 +15,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.apache.log4j.Logger;
 import org.d2rq.D2RQException;
 import org.d2rq.db.SQLConnection;
 import org.d2rq.db.types.DataType;
 import org.d2rq.db.vendor.Vendor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -31,7 +32,7 @@ import org.d2rq.db.vendor.Vendor;
  * @author Richard Cyganiak (richard@cyganiak.de)
  */
 public class Inspector {
-	private final static Logger log = Logger.getLogger(Inspector.class);
+	private final static Logger log = LoggerFactory.getLogger(Inspector.class);
 
 	private final Connection connection;
 	private final Vendor vendor;

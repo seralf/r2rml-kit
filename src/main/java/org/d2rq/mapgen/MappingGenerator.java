@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.d2rq.db.SQLConnection;
 import org.d2rq.db.schema.ColumnDef;
 import org.d2rq.db.schema.ForeignKey;
@@ -16,6 +15,8 @@ import org.d2rq.db.schema.TableName;
 import org.d2rq.db.types.DataType;
 import org.d2rq.lang.Microsyntax;
 import org.d2rq.values.TemplateValueMaker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -32,7 +33,7 @@ import com.hp.hpl.jena.shared.impl.PrefixMappingImpl;
  * @author Richard Cyganiak (richard@cyganiak.de)
  */
 public class MappingGenerator {
-	private final static Logger log = Logger.getLogger(MappingGenerator.class);
+	private final static Logger log = LoggerFactory.getLogger(MappingGenerator.class);
 
 	private final MappingStyle style;
 	private final SQLConnection sqlConnection;

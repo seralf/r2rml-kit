@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
 import org.d2rq.db.SQLConnection;
 import org.d2rq.db.schema.ForeignKey;
 import org.d2rq.db.schema.Identifier;
@@ -21,6 +20,8 @@ import org.d2rq.lang.Mapping;
 import org.d2rq.lang.Microsyntax;
 import org.d2rq.lang.PropertyBridge;
 import org.d2rq.values.TemplateValueMaker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -30,7 +31,7 @@ import com.hp.hpl.jena.vocabulary.RDFS;
 import com.hp.hpl.jena.vocabulary.XSD;
 
 public class D2RQTarget implements Target {
-	private final static Logger log = Logger.getLogger(D2RQTarget.class);
+	private final static Logger log = LoggerFactory.getLogger(D2RQTarget.class);
 
 	private final Model model = ModelFactory.createDefaultModel();
 	private final Map<TableName,ClassMap> classMaps = 
